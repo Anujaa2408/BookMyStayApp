@@ -24,7 +24,7 @@ public class BookingService {
     }
 
     // Process bookings
-    public void processBookings() {
+    public synchronized void processBookings() {
 
         System.out.println("=== Processing Bookings ===");
 
