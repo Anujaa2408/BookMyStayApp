@@ -1,7 +1,9 @@
+import java.io.Serializable;
+
 /**
- * UC5 - Reservation (Booking Request)
+ * UC5 - Reservation (UPDATED for UC12)
  */
-public class Reservation {
+public class Reservation implements Serializable {
 
     String guestName;
     String roomType;

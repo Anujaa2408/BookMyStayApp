@@ -1,13 +1,13 @@
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
- * UC3 - Centralized Room Inventory Management
+ * UC3 - Room Inventory (UPDATED for UC12)
  */
-public class RoomInventory {
+public class RoomInventory implements Serializable {
 
     private HashMap<String, Integer> inventory;
 
-    // Constructor → initialize inventory
     public RoomInventory() {
         inventory = new HashMap<>();
 
@@ -16,17 +16,14 @@ public class RoomInventory {
         inventory.put("Suite Room", 2);
     }
 
-    // Get availability
     public int getAvailability(String roomType) {
         return inventory.getOrDefault(roomType, 0);
     }
 
-    // Update availability
     public void updateAvailability(String roomType, int count) {
         inventory.put(roomType, count);
     }
 
-    // Display inventory
     public void displayInventory() {
         System.out.println("=== Room Inventory ===");
 
