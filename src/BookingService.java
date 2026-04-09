@@ -4,7 +4,7 @@ import java.util.Set;
 
 /**
  * Booking Service
- * Handles allocation, history tracking, validation, and exposes allocated data
+ * Handles booking allocation, validation, history, and exposes data for cancellation
  */
 public class BookingService {
 
@@ -23,7 +23,7 @@ public class BookingService {
         this.allocatedRooms = new HashMap<>();
     }
 
-    // Process booking requests
+    // Process bookings
     public void processBookings() {
 
         System.out.println("=== Processing Bookings ===");
@@ -47,7 +47,7 @@ public class BookingService {
                 // Generate room ID
                 String roomId = roomType.substring(0, 2).toUpperCase() + "_" + available;
 
-                // Initialize set if needed
+                // Initialize set
                 allocatedRooms.putIfAbsent(roomType, new HashSet<>());
 
                 // Ensure uniqueness
@@ -58,10 +58,9 @@ public class BookingService {
                     // ✅ UC6: Update inventory
                     inventory.updateAvailability(roomType, available - 1);
 
-                    // ✅ UC8: Add to history
+                    // ✅ UC8: Save to history
                     history.addReservation(request);
 
-                    // Confirmation
                     System.out.println("Booking Confirmed:");
                     System.out.println("Guest: " + request.guestName);
                     System.out.println("Room Type: " + roomType);
@@ -70,13 +69,13 @@ public class BookingService {
                 }
 
             } catch (InvalidBookingException e) {
-                // ✅ UC9: Graceful error handling
+                // ✅ UC9: Graceful error
                 System.out.println("Booking Failed: " + e.getMessage());
             }
         }
     }
 
-    // ✅ UC10: Getter for allocated rooms (for cancellation)
+    // ✅ UC10: Getter for cancellation service
     public HashMap<String, Set<String>> getAllocatedRooms() {
         return allocatedRooms;
     }

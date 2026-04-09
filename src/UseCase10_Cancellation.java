@@ -1,6 +1,3 @@
-/**
- * UC10 - Test Cancellation
- */
 public class UseCase10_Cancellation {
 
     public static void main(String[] args) {
@@ -17,12 +14,11 @@ public class UseCase10_Cancellation {
         BookingService service = new BookingService(queue, inventory, history);
         service.processBookings();
 
-        // Cancellation service
-        CancellationService cancelService =
-                new CancellationService(inventory, history, service.getAllocatedRooms());
+        // Cancel booking
+        CancellationService cancel =
+                new CancellationService(inventory, service.getAllocatedRooms());
 
-        // Cancel one booking
-        cancelService.cancelBooking("Single Room");
+        cancel.cancelBooking("Single Room");
 
         // Show updated inventory
         System.out.println("\nUpdated Inventory:");
