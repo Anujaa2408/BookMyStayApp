@@ -3,19 +3,22 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * UC6 - Booking Service (Allocation)
+ * UC6 + UC8 - Booking Service (Allocation + History)
  */
 public class BookingService {
 
     private BookingQueue queue;
     private RoomInventory inventory;
+    private BookingHistory history;
 
     // Track allocated rooms
     private HashMap<String, Set<String>> allocatedRooms;
 
-    public BookingService(BookingQueue queue, RoomInventory inventory) {
+    // Updated constructor (with history)
+    public BookingService(BookingQueue queue, RoomInventory inventory, BookingHistory history) {
         this.queue = queue;
         this.inventory = inventory;
+        this.history = history;
         this.allocatedRooms = new HashMap<>();
     }
 
@@ -25,6 +28,7 @@ public class BookingService {
         System.out.println("=== Processing Bookings ===");
 
         while (true) {
+
             Reservation request = queue.getNextRequest();
 
             if (request == null) {
@@ -39,12 +43,12 @@ public class BookingService {
             if (available > 0) {
 
                 // Generate unique room ID
-                String roomId = roomType.substring(0, 2).toUpperCase() + "_" + (available);
+                String roomId = roomType.substring(0, 2).toUpperCase() + "_" + available;
 
                 // Initialize set if not exists
                 allocatedRooms.putIfAbsent(roomType, new HashSet<>());
 
-                // Check uniqueness
+                // Ensure uniqueness
                 if (!allocatedRooms.get(roomType).contains(roomId)) {
 
                     allocatedRooms.get(roomType).add(roomId);
@@ -52,6 +56,10 @@ public class BookingService {
                     // Update inventory
                     inventory.updateAvailability(roomType, available - 1);
 
+                    // ✅ UC8: Add to booking history
+                    history.addReservation(request);
+
+                    // Confirmation output
                     System.out.println("Booking Confirmed:");
                     System.out.println("Guest: " + request.guestName);
                     System.out.println("Room Type: " + roomType);
